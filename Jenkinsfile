@@ -19,11 +19,9 @@ node {
 
 	stage ('Tag Image For Deployment') {
 		openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
-		 openshift.withCredentials( 'devuser' ) {
-	           openshift.withProject("${params.ENVIRONMENT}") { // select namespace
+		    openshift.withProject("${params.ENVIRONMENT}") { // select namespace
 		       openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.DEST_IMAGE_TAG}")    
                     }
-		 }
 		}
 	}
     } catch (e) {
