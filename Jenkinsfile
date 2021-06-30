@@ -1,7 +1,8 @@
 properties([
      parameters([
         string(name: 'SERVICE', description: 'The name of the service you want to deploy.'),
-        string(name: 'IMAGE_TAG', defaultValue: 'develop', description: 'The tag of the image you want to deploy.'),
+        string(name: 'SOURCE_IMAGE_TAG', defaultValue: 'latest/dev/1.0', description: 'The source tag of the image you want to deploy.'),
+	string(name: 'DEST_IMAGE_TAG', defaultValue: 'develop', description: 'The target tag of the image you want to deploy.')
         choice(name: 'ENVIRONMENT', choices: ['development', 'staging', 'production'], description: 'Target environment you want to deploy to.')
      ])
 ])
@@ -13,13 +14,15 @@ node {
 		checkout scm
 	}
 
-	def imageToDeploy = "${params.SERVICE}:${params.IMAGE_TAG}"
+	def imageToDeploy = "${params.SERVICE}:${params.SOURCE_IMAGE_TAG}"
 	print "Deploying ${imageToDeploy} to ${params.ENVIRONMENT}"
 
 	stage ('Tag Image For Deployment') {
 		openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
+	           openshift.withCredentials( 'devuser' ) {
                     openshift.withProject('development') { // select namespace
-		       openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.ENVIRONMENT}")
+		       openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.DEST_IMAGE_TAG}")
+		       }    
                     }
 		}
 	}
