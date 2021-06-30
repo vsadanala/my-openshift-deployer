@@ -2,7 +2,7 @@ properties([
      parameters([
         string(name: 'SERVICE', description: 'The name of the service you want to deploy.'),
         string(name: 'SOURCE_IMAGE_TAG', defaultValue: 'latest', description: 'The source tag of the image you want to deploy.'),
-	string(name: 'DEST_IMAGE_TAG', defaultValue: 'develop', description: 'The target tag of the image you want to deploy.')
+	string(name: 'DEST_IMAGE_TAG', defaultValue: 'develop', description: 'The target tag of the image you want to deploy.'),
         choice(name: 'ENVIRONMENT', choices: ['development', 'staging', 'production'], description: 'Target environment you want to deploy to.')
      ])
 ])
