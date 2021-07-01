@@ -18,7 +18,7 @@ node {
 
 	stage ('Tag Image For Deployment') {
 		openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
-                    openshift.withProject('development') { // select namespace
+                    openshift.withProject('production') { // select namespace
 		       openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.ENVIRONMENT}")
                     }
 		}
