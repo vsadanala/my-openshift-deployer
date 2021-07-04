@@ -23,8 +23,8 @@ node {
 		     openshift.withCredentials( 'produser' ) {
 		      openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.DEST_IMAGE_TAG}")    
                      }}}    */
-	oc login -u produser -n ${params.ENVIRONMENT}
-	oc set image deployment ${params.SERVICE} ${params.SERVICE}=image-registry.openshift-image-registry.svc:5000/development/hello-react:${params.DEST_IMAGE_TAG}
+	oc login -u produser -n production
+	oc set image deployment hello-react hello-react=image-registry.openshift-image-registry.svc:5000/development/hello-react:v2.0
 
 	}
     } catch (e) {
