@@ -18,13 +18,14 @@ node {
 	print "Deploying ${imageToDeploy} to ${params.ENVIRONMENT}"
 
 	stage ('Tag Image For Deployment') {
-		openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
+/*		openshift.withCluster() { // Use "default" cluster or fallback to OpenShift cluster detection
 		    openshift.withProject("${params.ENVIRONMENT}") { // select namespace
 		     openshift.withCredentials( 'produser' ) {
 		      openshift.tag("${imageToDeploy}", "${params.SERVICE}:${params.DEST_IMAGE_TAG}")    
-                     }
-		   }
-             }
+                     }}}    */
+	oc login -u produser -n ${params.ENVIRONMENT}
+	oc set image deployment ${params.SERVICE} ${params.SERVICE}=image-registry.openshift-image-registry.svc:5000/development/hello-react:${params.DEST_IMAGE_TAG}
+
 	}
     } catch (e) {
         deploySuccessful = false
